@@ -1,16 +1,12 @@
 // firebase real-time db
 import firebase from "firebase";
 
-function savePhraseToFirebase({ phraseText, userId }) {
+function savePhraseToFirebase({ phraseText, phraseTrans, userId }) {
   return firebase
     .database()
     .ref(`phrases`)
     .push()
-    .set({ phraseText, userId, timestamp: getCurrentTime() });
-  // return firebase
-  // 	.database()
-  // 	.ref(`users/${id}`)
-  // 	.set({ endpoint, time: getCurrentTime() });
+    .set({ phraseText, phraseTrans, userId, timestamp: getCurrentTime() });
 }
 
 function removeDeviceKeyInFirebase() {
@@ -38,6 +34,7 @@ async function getPhrasesByUser(userId) {
   if (!userId) {
     return;
   }
+  console.log({userId})
   const snapshot = await firebase
     .database()
     .ref("/phrases/")
