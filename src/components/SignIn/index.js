@@ -2,12 +2,14 @@ import React from 'react';
 
 import { useAuthState } from 'react-firebase-hooks/auth';
 import firebase from "firebase";
+import { loginAccountWithGoogle, loginAccountWithFacebook } from '../../util/firebase-auth'
 
 export default () => {
   const [user, initialising, error] = useAuthState(firebase.auth());
   const login = () => {
     firebase.auth().signInWithEmailAndPassword('test@test.com', 'password');
   };
+
   const logout = () => {
     firebase.auth().signOut();
   };
@@ -34,5 +36,11 @@ export default () => {
       </div>
     );
   }
-  return <button onClick={login}>Log in</button>;
+  return (
+    <div>
+      <button onClick={login}>Log in</button>
+      <button onClick={loginAccountWithGoogle}>Log in with google</button>
+      <button onClick={loginAccountWithFacebook}>Log in with facebook</button>
+    </div>
+  )
 };
