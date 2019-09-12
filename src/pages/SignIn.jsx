@@ -2,7 +2,7 @@ import React from 'react';
 
 import { useAuthState } from 'react-firebase-hooks/auth';
 import firebase from "firebase";
-import { loginAccountWithGoogle, loginAccountWithFacebook } from '../../util/firebase-auth'
+import { loginAccountWithGoogle, loginAccountWithFacebook } from '../util/firebase-auth'
 
 export default () => {
   const [user, initialising, error] = useAuthState(firebase.auth());
