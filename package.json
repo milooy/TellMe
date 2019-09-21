@@ -14,11 +14,24 @@
     "react-scripts": "0.9.x",
     "styled-components": "^4.3.2"
   },
-  "devDependencies": {},
+  "devDependencies": {
+    "@types/react": "^16.9.2",
+    "@typescript-eslint/eslint-plugin": "^2.3.0",
+    "@typescript-eslint/parser": "^2.3.0",
+    "eslint": "^5.16.0",
+    "eslint-config-prettier": "^6.3.0",
+    "eslint-config-react": "^1.1.7",
+    "eslint-loader": "^3.0.0",
+    "eslint-plugin-prettier": "^3.1.1",
+    "prettier": "^1.18.2",
+    "tslint": "^5.20.0",
+    "typescript": "^3.6.3"
+  },
   "scripts": {
     "start": "react-scripts start",
     "build": "react-scripts build",
     "test": "react-scripts test --env=jsdom",
-    "eject": "react-scripts eject"
+    "eject": "react-scripts eject",
+    "lint:fix": "eslint './src/**/*.{ts,tsx}'"
   }
 }
