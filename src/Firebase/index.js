@@ -1,5 +1,5 @@
-import * as firebase from 'firebase'
-let database
+import * as firebase from "firebase";
+let database;
 
 export const firebaseInit = () => {
   const config = {
@@ -11,6 +11,6 @@ export const firebaseInit = () => {
     messagingSenderId: "611188270205",
     appId: "1:611188270205:web:9dc68e43929ae5d5"
   };
-  firebase.initializeApp(config)
-  database = firebase.database()
-}
+  firebase.initializeApp(config);
+  database = firebase.database();
+};

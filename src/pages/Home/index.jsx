@@ -6,7 +6,6 @@ import get from "lodash/fp/get";
 import map from "lodash/fp/map";
 import {
   savePhraseToFirebase,
-  getPhrases,
   getPhrasesByUser
 } from "../../util/firebase-db";
 

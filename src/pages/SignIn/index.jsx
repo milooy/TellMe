@@ -1,13 +1,16 @@
-import React from 'react';
+import React from "react";
 
-import { useAuthState } from 'react-firebase-hooks/auth';
+import { useAuthState } from "react-firebase-hooks/auth";
 import firebase from "firebase";
-import { loginAccountWithGoogle, loginAccountWithFacebook } from '../util/firebase-auth'
+import {
+  loginAccountWithGoogle,
+  loginAccountWithFacebook
+} from "../../util/firebase-auth";
 
 export default () => {
   const [user, initialising, error] = useAuthState(firebase.auth());
   const login = () => {
-    firebase.auth().signInWithEmailAndPassword('test@test.com', 'password');
+    firebase.auth().signInWithEmailAndPassword("test@test.com", "password");
   };
 
   const logout = () => {
@@ -42,5 +45,5 @@ export default () => {
       <button onClick={loginAccountWithGoogle}>Log in with google</button>
       <button onClick={loginAccountWithFacebook}>Log in with facebook</button>
     </div>
-  )
+  );
 };
