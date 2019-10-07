@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { FunctionComponent, useState, useEffect } from 'react';
 import { useAuthState } from 'react-firebase-hooks/auth';
 import firebase from 'firebase';
 import moment from 'moment';
@@ -6,7 +6,8 @@ import get from 'lodash/fp/get';
 import map from 'lodash/fp/map';
 import { savePhraseToFirebase, getPhrasesByUser } from '../../util/firebase-db';
 
-const Landing = () => {
+const Landing:FunctionComponent<{ initial?: number }> = ({ initial = 0 }) => {
+
   const [user, initialising, error] = useAuthState(firebase.auth());
   const [phraseText, setPhraseText] = useState('');
   const [phraseTrans, setPhraseTrans] = useState('');
