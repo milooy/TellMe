@@ -1,29 +1,23 @@
-import React, { Component } from "react";
 import { Layout } from "antd";
 import "antd/dist/antd.css";
+import React, { Component } from "react";
 
 import { BrowserRouter as Router, Route } from "react-router-dom";
 
 import Navigation from "../components/Navigation";
+import * as ROUTES from "../constants/routes";
+import { firebaseInit } from "../Firebase";
+import HomePage from "./Home";
 import LandingPage from "./Landing";
 import SignInPage from "./SignIn";
-import HomePage from "./Home/index";
-import { firebaseInit } from "../Firebase";
-import * as ROUTES from "../constants/routes";
 
-export interface HelloProps { compiler: string; framework: string; }
-
-type ClockState = {
-  time: Date
-}
-
-export default class App extends Component<{}, ClockState> {
-  constructor(props: HelloProps) {
+export default class App extends Component {
+  constructor(props: {}) {
     super(props);
     firebaseInit();
   }
 
-  render() {
+  public render() {
     return (
       <Router>
         <Layout style={{ minHeight: "100vh" }}>
