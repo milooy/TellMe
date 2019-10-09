@@ -7,12 +7,18 @@ import { BrowserRouter as Router, Route } from "react-router-dom";
 import Navigation from "../components/Navigation";
 import LandingPage from "./Landing";
 import SignInPage from "./SignIn";
-import HomePage from "./Home/index.jsx";
+import HomePage from "./Home/index";
 import { firebaseInit } from "../Firebase";
 import * as ROUTES from "../constants/routes";
 
-export default class App extends Component {
-  constructor(props) {
+export interface HelloProps { compiler: string; framework: string; }
+
+type ClockState = {
+  time: Date
+}
+
+export default class App extends Component<{}, ClockState> {
+  constructor(props: HelloProps) {
     super(props);
     firebaseInit();
   }
@@ -30,3 +36,9 @@ export default class App extends Component {
     );
   }
 }
+
+// import * as React from "react";
+
+// export interface HelloProps { compiler: string; framework: string; }
+
+// export default (props: HelloProps) => <h1>Hello from {props.compiler} and {props.framework}!</h1>;

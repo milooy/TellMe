@@ -1,9 +1,9 @@
 import React, { useState } from "react";
 import { Layout, Menu, Icon } from "antd";
 import styled from "styled-components";
-const { Header, Content, Footer, Sider } = Layout;
 import { Link } from "react-router-dom";
 import * as ROUTES from "../../constants/routes";
+const { Header, Content, Footer, Sider } = Layout;
 
 const Logo = styled.div`
   color: white;
