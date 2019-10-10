@@ -9,6 +9,11 @@ const PhraseInputContainer = styled.form`
   border: 1px solid black;
   background: white;
 
+  label {
+    flex-shrink: 0;
+    margin-right: 5px;
+  }
+
   textarea {
     width: 100%;
     border: none;
@@ -16,15 +21,17 @@ const PhraseInputContainer = styled.form`
 `;
 
 const PhraseText = styled.div`
-  display: block;
-  padding: 3px;
+  display: flex;
   border-bottom: 1px solid black;
+  align-items: center;
+  padding: 10px 7px;
 `;
 
 const PhraseTrans = styled.div`
-  display: block;
-  padding: 3px;
+  display: flex;
   border-bottom: 1px solid black;
+  align-items: center;
+  padding: 10px 7px;
 `;
 
 const Footer = styled.div`

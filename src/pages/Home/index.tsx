@@ -6,6 +6,7 @@ import get from "lodash/fp/get";
 import map from "lodash/fp/map";
 import { getPhrasesByUser } from "../../util/firebase-db";
 import PhraseInput from "./PhraseInput";
+import Welcome from "./Welcome";
 
 const Landing: FunctionComponent<{}> = () => {
   const [user, initialising, error] = useAuthState(firebase.auth());
@@ -24,7 +25,7 @@ const Landing: FunctionComponent<{}> = () => {
 
   return (
     <div>
-      <h1>Home {get("email", user)}</h1>
+      <Welcome />
       <PhraseInput getList={getList} />
       {map(
         (phrase) => (
