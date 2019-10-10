@@ -22,9 +22,11 @@ export default class App extends Component {
       <Router>
         <Layout style={{ minHeight: "100vh" }}>
           <Navigation />
-          <Route exact path={ROUTES.LANDING} component={LandingPage} />
-          <Route path={ROUTES.SIGN_IN} component={SignInPage} />
-          <Route path={ROUTES.TODAY} component={HomePage} />
+          <div style={{ width: "100%", padding: "10px 20px" }}>
+            <Route exact path={ROUTES.LANDING} component={LandingPage} />
+            <Route path={ROUTES.SIGN_IN} component={SignInPage} />
+            <Route path={ROUTES.TODAY} component={HomePage} />
+          </div>
         </Layout>
       </Router>
     );
