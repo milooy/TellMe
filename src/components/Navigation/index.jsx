@@ -20,7 +20,7 @@ const StyledSider = styled(Sider)`
 const Navigation = () => {
   const [collapsed, setCollapsed] = useState(false);
 
-  const onCollapse = collapsed => {
+  const onCollapse = (collapsed) => {
     setCollapsed(collapsed);
   };
 
@@ -29,9 +29,9 @@ const Navigation = () => {
       <Logo>TELLME</Logo>
       <Menu theme="dark" defaultSelectedKeys={["1"]} mode="inline">
         <Menu.Item key="1">
-          <Link to={ROUTES.TODAY}>
+          <Link to={ROUTES.PHRASES}>
             <Icon type="desktop" />
-            <span>Today</span>
+            <span>Phrases</span>
           </Link>
         </Menu.Item>
         <Menu.Item key="2">

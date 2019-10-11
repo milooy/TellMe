@@ -1,14 +1,17 @@
 import React, { FunctionComponent, useState, useEffect } from "react";
+import { Redirect } from "react-router-dom";
+
 import { useAuthState } from "react-firebase-hooks/auth";
 import firebase from "firebase";
 import moment from "moment";
 import get from "lodash/fp/get";
 import map from "lodash/fp/map";
+import * as ROUTES from "../../constants/routes";
 import { getPhrasesByUser } from "../../util/firebase-db";
 import PhraseInput from "./PhraseInput";
 import Welcome from "./Welcome";
 
-const Landing: FunctionComponent<{}> = () => {
+const Phrases: FunctionComponent<{}> = () => {
   const [user, initialising, error] = useAuthState(firebase.auth());
   const [phraseList, setPhraseList] = useState([]);
 
@@ -22,6 +25,12 @@ const Landing: FunctionComponent<{}> = () => {
     // TODO: Check if there's unnessasary call
     getList();
   }, [user]);
+
+  console.log({user, initialising, error})
+
+  if (!initialising && !user) {
+    return <Redirect to={ROUTES.SIGN_IN}/>;
+  }
 
   return (
     <div>
@@ -41,4 +50,4 @@ const Landing: FunctionComponent<{}> = () => {
   );
 };
 
-export default Landing;
+export default Phrases;
