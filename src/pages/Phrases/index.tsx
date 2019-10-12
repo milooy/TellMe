@@ -3,12 +3,11 @@ import { Redirect } from "react-router-dom";
 
 import { useAuthState } from "react-firebase-hooks/auth";
 import firebase from "firebase";
-import moment from "moment";
 import get from "lodash/fp/get";
-import map from "lodash/fp/map";
 import * as ROUTES from "../../constants/routes";
 import { getPhrasesByUser } from "../../util/firebase-db";
 import PhraseInput from "./PhraseInput";
+import PhraseList from "./PhraseList";
 import Welcome from "./Welcome";
 
 const Phrases: FunctionComponent<{}> = () => {
@@ -26,7 +25,6 @@ const Phrases: FunctionComponent<{}> = () => {
     getList();
   }, [user]);
 
-  console.log({user, initialising, error})
 
   if (!initialising && !user) {
     return <Redirect to={ROUTES.SIGN_IN}/>;
@@ -36,16 +34,7 @@ const Phrases: FunctionComponent<{}> = () => {
     <div>
       <Welcome />
       <PhraseInput getList={getList} />
-      {map(
-        (phrase) => (
-          <div>
-            <div>{moment(get("timestamp", phrase)).format("MMM Do YY")}</div>
-            <div>{get("phraseText", phrase)}</div>
-            <div>{get("phraseTrans", phrase)}</div>
-          </div>
-        ),
-        phraseList,
-      )}
+      <PhraseList phraseList={phraseList} />
     </div>
   );
 };
