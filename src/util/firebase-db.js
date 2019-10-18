@@ -26,7 +26,8 @@ async function getPhrases() {
   const snapshot = await firebase
     .database()
     .ref("/phrases/")
-    .once("value");
+    .orderByChild("num")
+    .on("value");
   return snapshot.val();
 }
 
@@ -35,12 +36,31 @@ async function getPhrasesByUser(userId) {
     return;
   }
   console.log({userId})
+
+  var ref = firebase.database().ref("phrases");
+  ref.orderByChild("num").on("child_added", function(snapshot) {
+    console.log("hihihihi")
+    console.log(snapshot.val());
+    // console.log(snapshot.key + " was " + snapshot.val().height + " meters tall");
+  });
+
+  // const snapshot = await firebase
+  //   .database()
+  //   .ref("phrases")
+  //   .orderByChild("num")
+  //   .once("value");
+  
   const snapshot = await firebase
     .database()
-    .ref("/phrases/")
-    .orderByChild("userId")
-    .equalTo(userId)
-    .once("value");
+    .ref("phrases")
+    .orderByChild("num")
+    .on("child_added");
+  // const snapshot = await firebase
+  //   .database()
+  //   .ref("/phrases/")
+  //   .orderByChild("userId")
+  //   .equalTo(userId)
+  //   .once("value");
   return snapshot.val();
 }
 
