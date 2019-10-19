@@ -50,11 +50,7 @@ const Button = styled.button`
   cursor: pointer;
 `;
 
-type IProps = {
-  getList: () => void;
-};
-
-const PhraseInput: FunctionComponent<IProps> = ({ getList }) => {
+const PhraseInput: FunctionComponent<{}> = () => {
   const [user, initialising, error] = useAuthState(firebase.auth());
   const [phraseText, setPhraseText] = useState("");
   const [phraseTrans, setPhraseTrans] = useState("");
@@ -66,7 +62,6 @@ const PhraseInput: FunctionComponent<IProps> = ({ getList }) => {
       savePhraseToFirebase({ userId, phraseText, phraseTrans });
       setPhraseText("");
       setPhraseTrans("");
-      getList();
     }
   };
 

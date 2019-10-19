@@ -1,57 +1,105 @@
 // firebase real-time db
 import firebase from "firebase";
 
-function savePhraseToFirebase({ phraseText, phraseTrans, userId }) {
+export function savePhraseToFirebase({ phraseText, phraseTrans, userId }) {
   return firebase
     .database()
     .ref(`phrases`)
     .push()
-    .set({ phraseText, phraseTrans, userId, timestamp: getCurrentTime() });
+    .set({
+      phraseText,
+      phraseTrans,
+      userId,
+      timestamp: _getCurrentTime(),
+      rightPoint: 0,
+      wrongPoint: 0,
+    });
 }
 
-function removeDeviceKeyInFirebase() {
-  // Firebase 의 DB data 삭제 API 를 이용하여
-  // Disable 한 기기의 키 값을 제거해보세요.
+export function updatePoint({ type, phraseId, prevPoint }) {
+  console.log(prevPoint, prevPoint + 1);
+  if (type === "RIGHT") {
+    return firebase
+      .database()
+      .ref(`phrases/${phraseId}`)
+      .update({
+        rightPoint: (prevPoint || 0) + 1,
+        timestamp: _getCurrentTime(),
+      });
+  }
+
+  if (type === "WRONG") {
+    return firebase
+      .database()
+      .ref(`phrases/${phraseId}`)
+      .update({
+        wrongPoint: (prevPoint || 0) + 1,
+        timestamp: _getCurrentTime(),
+      });
+  }
 }
 
-async function getUserList() {
-  const snapshot = await firebase
-    .database()
-    .ref("/users/")
-    .once("value");
-  return snapshot.val();
-}
-
-async function getPhrases() {
+export async function getPhrases() {
   const snapshot = await firebase
     .database()
     .ref("/phrases/")
+    .orderByChild("num")
     .once("value");
   return snapshot.val();
 }
 
-async function getPhrasesByUser(userId) {
+/*
+  @Depreated
+
+  async function getList() {
+    const phrases = await getPhrasesByUser(userId);
+    setPhraseList(phrases);
+  }
+*/
+export async function getPhrasesByUserOnce(userId) {
   if (!userId) {
     return;
   }
-  console.log({userId})
+
   const snapshot = await firebase
     .database()
     .ref("/phrases/")
     .orderByChild("userId")
     .equalTo(userId)
     .once("value");
+
   return snapshot.val();
 }
 
-function getCurrentTime() {
-  return new Date().getTime();
+/*
+  @Depreated: You can use this like
+  async function getList() {
+    const phrases = await getPhrasesByUser(userId);
+    setPhraseList(phrases);
+  }
+*/
+export function getPhrasesByUserReturnPromise(userId = "") {
+  return new Promise(function(resolve, reject) {
+    firebase
+      .database()
+      .ref("/phrases/")
+      .orderByChild("userId")
+      .equalTo(userId)
+      .on("value", function(snapshot) {
+        console.log("계속 불리냐?", snapshot.val());
+        return resolve(snapshot.val());
+      });
+  });
 }
 
-export {
-  savePhraseToFirebase,
-  removeDeviceKeyInFirebase,
-  getUserList,
-  getPhrases,
-  getPhrasesByUser
-};
+export function getPhrasesByUserListener(userId = "") {
+  return firebase
+    .database()
+    .ref("/phrases/")
+    .orderByChild("userId")
+    .equalTo(userId);
+}
+
+function _getCurrentTime() {
+  return new Date().getTime();
+}

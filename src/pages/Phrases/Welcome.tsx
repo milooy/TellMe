@@ -31,7 +31,6 @@ const Button = styled.button`
 
 const Welcome: FunctionComponent<{}> = () => {
   const [user, initialising, error] = useAuthState(firebase.auth());
-  console.log({user})
 
   return (
     <WelcomeContainer>
