@@ -1,9 +1,9 @@
 import React, { FunctionComponent, useState, useEffect } from "react";
 import map from "lodash/fp/map";
-import forEach from "lodash/forEach";
 import get from "lodash/fp/get";
 import styled from "styled-components";
 import PhraseItem from "./PhraseItem";
+import { getFilteredPhraseList } from "./utils";
 
 const PhraseListContainer = styled.div`
   margin-top: 10px;
@@ -14,11 +14,7 @@ type IProps = {
 };
 
 const PhraseList: FunctionComponent<IProps> = ({ phraseList }) => {
-  console.log({phraseList})
-
-  const polishedPhraseList = forEach(phraseList, (value: Object, key: string) => (
-    value["key"] = key
-  ));
+  const filteredPhraseList = getFilteredPhraseList(phraseList);
 
   return (
     <PhraseListContainer>
@@ -26,7 +22,7 @@ const PhraseList: FunctionComponent<IProps> = ({ phraseList }) => {
         (phrase: any) => (
           <PhraseItem phrase={phrase} key={get("key", phrase)} />
         ),
-        polishedPhraseList,
+        filteredPhraseList,
       )}
     </PhraseListContainer>
   );

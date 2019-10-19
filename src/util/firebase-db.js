@@ -17,7 +17,7 @@ export function savePhraseToFirebase({ phraseText, phraseTrans, userId }) {
 }
 
 export function updatePoint({ type, phraseId, prevPoint }) {
-  console.log(prevPoint, prevPoint + 1)
+  console.log(prevPoint, prevPoint + 1);
   if (type === "RIGHT") {
     return firebase
       .database()
@@ -44,40 +44,60 @@ export async function getPhrases() {
     .database()
     .ref("/phrases/")
     .orderByChild("num")
-    .on("value");
+    .once("value");
   return snapshot.val();
 }
 
-export async function getPhrasesByUser(userId) {
+/*
+  @Depreated
+
+  async function getList() {
+    const phrases = await getPhrasesByUser(userId);
+    setPhraseList(phrases);
+  }
+*/
+export async function getPhrasesByUserOnce(userId) {
   if (!userId) {
     return;
   }
-  console.log({ userId });
 
-  // var ref = firebase.database().ref("phrases");
-  // ref.orderByChild("num").on("child_added", function(snapshot) {
-  //   console.log("hihihihi")
-  //   console.log(snapshot.val());
-  // });
-
-  // const snapshot = await firebase
-  //   .database()
-  //   .ref("phrases")
-  //   .orderByChild("num")
-  //   .once("value");
-  
   const snapshot = await firebase
     .database()
-    .ref("phrases")
-    .orderByChild("num")
-    .on("child_added");
-  // const snapshot = await firebase
-  //   .database()
-  //   .ref("/phrases/")
-  //   .orderByChild("userId")
-  //   .equalTo(userId)
-  //   .once("value");
+    .ref("/phrases/")
+    .orderByChild("userId")
+    .equalTo(userId)
+    .once("value");
+
   return snapshot.val();
+}
+
+/*
+  @Depreated: You can use this like
+  async function getList() {
+    const phrases = await getPhrasesByUser(userId);
+    setPhraseList(phrases);
+  }
+*/
+export function getPhrasesByUserReturnPromise(userId = "") {
+  return new Promise(function(resolve, reject) {
+    firebase
+      .database()
+      .ref("/phrases/")
+      .orderByChild("userId")
+      .equalTo(userId)
+      .on("value", function(snapshot) {
+        console.log("계속 불리냐?", snapshot.val());
+        return resolve(snapshot.val());
+      });
+  });
+}
+
+export function getPhrasesByUserListener(userId = "") {
+  return firebase
+    .database()
+    .ref("/phrases/")
+    .orderByChild("userId")
+    .equalTo(userId);
 }
 
 function _getCurrentTime() {

@@ -5,7 +5,7 @@ import { useAuthState } from "react-firebase-hooks/auth";
 import firebase from "firebase";
 import get from "lodash/fp/get";
 import * as ROUTES from "../../constants/routes";
-import { getPhrasesByUser } from "../../util/firebase-db";
+import { getPhrasesByUserListener } from "../../util/firebase-db";
 import PhraseInput from "./PhraseInput";
 import PhraseList from "./PhraseList";
 import Welcome from "./Welcome";
@@ -14,11 +14,12 @@ const Phrases: FunctionComponent<{}> = () => {
   const [user, initialising, error] = useAuthState(firebase.auth());
   const [phraseList, setPhraseList] = useState([]);
 
-  async function getList() {
+  function getList() {
+    console.info("GET_LIST")
     const userId = get("uid", user);
-    const phrases = await getPhrasesByUser(userId);
-    console.log({phrases})
-    setPhraseList(phrases);
+    getPhrasesByUserListener(userId).on("value", function(snapshot) {
+      setPhraseList(snapshot.val());
+    })
   }
 
   useEffect(() => {
@@ -34,7 +35,7 @@ const Phrases: FunctionComponent<{}> = () => {
   return (
     <div>
       <Welcome />
-      <PhraseInput getList={getList} />
+      <PhraseInput />
       <PhraseList phraseList={phraseList} />
     </div>
   );
