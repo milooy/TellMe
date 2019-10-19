@@ -17,6 +17,7 @@ const Phrases: FunctionComponent<{}> = () => {
   async function getList() {
     const userId = get("uid", user);
     const phrases = await getPhrasesByUser(userId);
+    console.log({phrases})
     setPhraseList(phrases);
   }
 
