@@ -1,23 +1,20 @@
 import { Layout } from "antd";
+import React, { Component, useEffect } from "react";
 import "antd/dist/antd.css";
-import React, { Component } from "react";
 import { BrowserRouter as Router, Route } from "react-router-dom";
 
 import Navigation from "../components/Navigation";
 import * as ROUTES from "../constants/routes";
-import { firebaseInit } from "../Firebase";
 import PhrasesPage from "./Phrases";
 import LandingPage from "./Landing";
 import SignInPage from "./SignIn";
+import { AppContext, useAppState } from "../hooks/state";
 
-export default class App extends Component {
-  constructor(props: {}) {
-    super(props);
-    firebaseInit();
-  }
+const App: React.FC = () => {
+  const { state, actions } = useAppState();
 
-  public render() {
-    return (
+  return (
+    <AppContext.Provider value={{ state, actions }}>
       <Router>
         <Layout style={{ minHeight: "100vh" }}>
           <Navigation />
@@ -28,9 +25,11 @@ export default class App extends Component {
           </div>
         </Layout>
       </Router>
-    );
-  }
-}
+    </AppContext.Provider>
+  );
+};
+
+export default App;
 
 // import * as React from "react";
 
