@@ -3,12 +3,16 @@ import get from "lodash/fp/get";
 import moment from "moment";
 import styled from "styled-components";
 import Collapse from "../../components/Collapse";
+import { updatePoint } from "../../util/firebase-db";
 
 const PhraseHeader = styled.div`
   display: flex;
   justify-content: space-between;
 `;
 const PhraseText = styled.div``;
+const PhraseTrans = styled.div`
+  font-weight: bold;
+`;
 const ButtonContainer = styled.div``;
 const YesButton = styled.button`
   background: none;
@@ -46,20 +50,45 @@ const ContentsFooter = styled.div`
   padding-top: 3px;
   color: #737373; 
 `;
-const Calculated = styled.div``;
+const PointsContainer = styled.div``;
 
-type IProps = {
-  phrase: Object;
+type PhraseItemProps = {
+  phrase: {
+    phraseText: string,
+    phraseTrans: string,
+    timestamp: string,
+    rightPoint: number,
+    wrongPoint: number,
+  };
 };
 
-const PhraseItem: FunctionComponent<IProps> = ({ phrase }) => {
-  const handleClickYes = (e) => {
+const PhraseItem: FunctionComponent<PhraseItemProps> = ({ phrase }) => {
+  const handleClickRight = (e) => {
     e.stopPropagation();
+    console.log({phrase})
+    updatePoint({
+      type: "RIGHT",
+      phraseId: get("key", phrase),
+      prevPoint: get("rightPoint", phrase),
+    });
   };
 
-  const handleClickNo = (e) => {
+  const handleClickWrong = (e) => {
     e.stopPropagation();
+    updatePoint({
+      type: "WRONG",
+      phraseId: get("key", phrase),
+      prevPoint: get("wrongPoint", phrase),
+    });
   };
+
+  const {
+    phraseText,
+    phraseTrans,
+    timestamp,
+    rightPoint,
+    wrongPoint,
+  } = phrase;
 
   return (
     <Collapse
@@ -67,20 +96,20 @@ const PhraseItem: FunctionComponent<IProps> = ({ phrase }) => {
         <PhraseHeader>
           <LeftPane>
             <Status />
-            <PhraseText>{get("phraseText", phrase)}</PhraseText>
+            <PhraseText>{phraseText}</PhraseText>
           </LeftPane>
           <ButtonContainer>
-            <YesButton onClick={handleClickYes}>🙂</YesButton>
-            <NoButton onClick={handleClickNo}>🤔</NoButton>
+            <YesButton onClick={handleClickRight}>🙂</YesButton>
+            <NoButton onClick={handleClickWrong}>🤔</NoButton>
           </ButtonContainer>
         </PhraseHeader>
       }
       contents={
         <PhraseContents>
-          <div>{get("phraseTrans", phrase)}</div>
+          <PhraseTrans>{phraseTrans}</PhraseTrans>
           <ContentsFooter>
-            <div>{moment(get("timestamp", phrase)).format("YY/MM/DD")}</div>
-            <Calculated>+8 -2 = 6</Calculated>
+            <div>{moment(timestamp).format("YY/MM/DD")}</div>
+            <PointsContainer>{`+${rightPoint} -${wrongPoint} = ${rightPoint - wrongPoint}`}</PointsContainer>
           </ContentsFooter>
         </PhraseContents>
       }

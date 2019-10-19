@@ -1,28 +1,45 @@
 // firebase real-time db
 import firebase from "firebase";
 
-function savePhraseToFirebase({ phraseText, phraseTrans, userId }) {
+export function savePhraseToFirebase({ phraseText, phraseTrans, userId }) {
   return firebase
     .database()
     .ref(`phrases`)
     .push()
-    .set({ phraseText, phraseTrans, userId, timestamp: getCurrentTime() });
+    .set({
+      phraseText,
+      phraseTrans,
+      userId,
+      timestamp: _getCurrentTime(),
+      rightPoint: 0,
+      wrongPoint: 0,
+    });
 }
 
-function removeDeviceKeyInFirebase() {
-  // Firebase 의 DB data 삭제 API 를 이용하여
-  // Disable 한 기기의 키 값을 제거해보세요.
+export function updatePoint({ type, phraseId, prevPoint }) {
+  console.log(prevPoint, prevPoint + 1)
+  if (type === "RIGHT") {
+    return firebase
+      .database()
+      .ref(`phrases/${phraseId}`)
+      .update({
+        rightPoint: (prevPoint || 0) + 1,
+        timestamp: _getCurrentTime(),
+      });
+  }
+
+  if (type === "WRONG") {
+    return firebase
+      .database()
+      .ref(`phrases/${phraseId}`)
+      .update({
+        wrongPoint: (prevPoint || 0) + 1,
+        timestamp: _getCurrentTime(),
+      });
+  }
 }
 
-async function getUserList() {
-  const snapshot = await firebase
-    .database()
-    .ref("/users/")
-    .once("value");
-  return snapshot.val();
-}
-
-async function getPhrases() {
+export async function getPhrases() {
   const snapshot = await firebase
     .database()
     .ref("/phrases/")
@@ -30,11 +47,11 @@ async function getPhrases() {
   return snapshot.val();
 }
 
-async function getPhrasesByUser(userId) {
+export async function getPhrasesByUser(userId) {
   if (!userId) {
     return;
   }
-  console.log({userId})
+  console.log({ userId });
   const snapshot = await firebase
     .database()
     .ref("/phrases/")
@@ -44,14 +61,6 @@ async function getPhrasesByUser(userId) {
   return snapshot.val();
 }
 
-function getCurrentTime() {
+function _getCurrentTime() {
   return new Date().getTime();
 }
-
-export {
-  savePhraseToFirebase,
-  removeDeviceKeyInFirebase,
-  getUserList,
-  getPhrases,
-  getPhrasesByUser
-};
