@@ -13,6 +13,7 @@ const PhraseListContainer = styled.div`
 const FilterPhrase: FunctionComponent<{}> = () => {
   const { state, actions } = useAppContext();
   console.log({state})
+  const showTransLanguage = state.userSettings.showTransLanguage;
 
   const handleSwitchChange = (e) => {
     console.log({ e });
@@ -21,6 +22,7 @@ const FilterPhrase: FunctionComponent<{}> = () => {
     <Switch
       checkedChildren="번역"
       unCheckedChildren="원어"
+      defaultChecked={showTransLanguage}
       onChange={handleSwitchChange}
     />
   );

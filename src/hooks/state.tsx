@@ -16,7 +16,7 @@ const AppContext = React.createContext({});
 type IAppState = {
   todos: Todo[],
   userSettings: {
-    baseLanguage: string,
+    showTransLanguage: boolean,
   },
 };
 
