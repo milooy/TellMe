@@ -16,6 +16,22 @@ export function savePhraseToFirebase({ phraseText, phraseTrans, userId }) {
     });
 }
 
+export function setBaseLanguage({ userId, type }) {
+  if (type === "ORIGINAL") {
+    return firebase
+      .database()
+      .ref(`/userSettings/${userId}`)
+      .set({
+        baseLanguageType: type,
+      });
+  }
+
+  if (type === "FOREIGN") {
+
+  }
+
+}
+
 export function updatePoint({ type, phraseId, prevPoint }) {
   console.log(prevPoint, prevPoint + 1);
   if (type === "RIGHT") {
@@ -37,15 +53,6 @@ export function updatePoint({ type, phraseId, prevPoint }) {
         timestamp: _getCurrentTime(),
       });
   }
-}
-
-export async function getPhrases() {
-  const snapshot = await firebase
-    .database()
-    .ref("/phrases/")
-    .orderByChild("num")
-    .once("value");
-  return snapshot.val();
 }
 
 /*
